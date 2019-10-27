@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.sp.singaporepsi.R
+import com.sp.singaporepsi.data.remote.APIServices
 
 class PSIMapFragment : Fragment() {
 
@@ -25,7 +26,7 @@ class PSIMapFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(PSIMapViewModel::class.java)
+        viewModel = ViewModelProviders.of(this,PSIMapViewModelFactory(APIServices.psiDataSourceRemote)).get(PSIMapViewModel::class.java)
         // TODO: Use the ViewModel
     }
 
