@@ -7,19 +7,19 @@
     android:layout_height="match_parent"
     tools:context=".ui.psimap.PSIMapFragment">
 
+
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabLayout"
         android:layout_width="match_parent"
-        android:layout_height="?attr/tabIndicatorHeight"
-        android:background="@color/colorPrimary"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_height="48dp"
         app:layout_constraintTop_toTopOf="parent"
-        app:tabTextColor="@color/colorText">
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@color/colorPrimary"
+        app:tabTextColor="@color/colorText"
+        tools:layout_editor_absoluteX="1dp">
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimaryDark"
             android:text="24h PSI" />
 
         <com.google.android.material.tabs.TabItem
@@ -28,5 +28,4 @@
             android:text="1h PM2.5" />
 
     </com.google.android.material.tabs.TabLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
