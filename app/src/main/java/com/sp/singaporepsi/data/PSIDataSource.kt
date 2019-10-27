@@ -4,5 +4,14 @@ import com.sp.singaporepsi.model.PSIInfo
 import retrofit2.Callback
 
 interface PSIDataSource {
-    fun fetchPSIData(callback: Callback<PSIInfo>)
+    fun fetchPSIData(callback: PSIInfoCallback)
+
+    interface PSIInfoCallback {
+
+        fun onPSIInfoLoaded(psiInfo: PSIInfo)
+
+        fun onDataNotAvailable()
+
+        fun onError(message: String)
+    }
 }
