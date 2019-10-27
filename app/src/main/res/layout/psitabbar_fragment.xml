@@ -5,7 +5,7 @@
     android:id="@+id/toplayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.psimap.PSIMapFragment">
+    tools:context=".ui.psimap.PSITabBarFragment">
 
 
     <com.google.android.material.tabs.TabLayout

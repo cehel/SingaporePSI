@@ -2,7 +2,7 @@ package com.sp.singaporepsi
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.sp.singaporepsi.ui.psimap.PSIMapFragment
+import com.sp.singaporepsi.ui.psimap.PSITabBarFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -11,7 +11,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.psimap_activity)
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.container, PSIMapFragment.newInstance())
+                .replace(R.id.container, PSITabBarFragment.newInstance())
                 .commitNow()
         }
     }

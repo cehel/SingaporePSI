@@ -9,10 +9,10 @@ import android.view.ViewGroup
 import com.sp.singaporepsi.R
 import com.sp.singaporepsi.data.remote.APIServices
 
-class PSIMapFragment : Fragment() {
+class PSITabBarFragment : Fragment() {
 
     companion object {
-        fun newInstance() = PSIMapFragment()
+        fun newInstance() = PSITabBarFragment()
     }
 
     private lateinit var viewModel: PSIMapViewModel
@@ -21,7 +21,7 @@ class PSIMapFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.psimap_fragment, container, false)
+        return inflater.inflate(R.layout.psitabbar_fragment, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
