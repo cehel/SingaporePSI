@@ -6,10 +6,10 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class PSIDataSourceRemote: PSIDataSource {
+class PSIDataSourceRemote(val psiAPI: PsiAPI): PSIDataSource {
 
     override fun fetchPSIData(callback: PSIDataSource.PSIInfoCallback) {
-        APIServices.psiAPI.getPsiInfo().enqueue(object: Callback<PSIInfo> {
+        psiAPI.getPsiInfo().enqueue(object: Callback<PSIInfo> {
 
             override fun onFailure(call: Call<PSIInfo>, t: Throwable) {
                 callback.onDataNotAvailable()
@@ -19,13 +19,12 @@ class PSIDataSourceRemote: PSIDataSource {
                 if (response.isSuccessful && response.body() != null ) {
                     val psiInfo = response.body()
                     psiInfo?.let { callback.onPSIInfoLoaded(psiInfo) }
-                } else if (response.body() == null) {
+                } else if (response.isSuccessful && response.body() == null) {
                     callback.onError("There was an error parsing the PSIData")
                 } else {
-                    callback.onError("There was an error fetching the data")
+                    callback.onDataNotAvailable()
                 }
             }
-
         })
     }
 
