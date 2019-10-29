@@ -5,12 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.sp.singaporepsi.data.PSIDataSource
 import com.sp.singaporepsi.model.PSIInfo
+import com.sp.singaporepsi.model.mapper.PollutionDataMapper
 import com.sp.singaporepsi.model.ui.PollutionData
 
 class PSIMapViewModel(val psiDataSource: PSIDataSource) : ViewModel() {
-
-    private val mutablePsiInfo: MutableLiveData<PSIInfo> = MutableLiveData<PSIInfo>()
-    val psiInfo: LiveData<PSIInfo> = mutablePsiInfo
 
     private val mutablePollutionDataPsi = MutableLiveData<PollutionData>()
     val pollutionDataPsi24: LiveData<PollutionData> = mutablePollutionDataPsi
@@ -40,17 +38,10 @@ class PSIMapViewModel(val psiDataSource: PSIDataSource) : ViewModel() {
 
         psiDataSource.fetchPSIData(object: PSIDataSource.PSIInfoCallback {
             override fun onPSIInfoLoaded(psiInfo: PSIInfo) {
-                mutablePsiInfo.postValue(psiInfo)
                 mutablePollutionDataPsi.postValue(
-                    PollutionData(
-                        psiInfo.region_metadata,
-                        psiInfo.items[0].readings.psi_twenty_four_hourly,
-                        psiInfo.items[0].update_timestamp))
+                    PollutionDataMapper.createPSIPollutionData(psiInfo))
                 mutablePollutionDataPM25.postValue(
-                    PollutionData(
-                        psiInfo.region_metadata,
-                        psiInfo.items[0].readings.pm25_twenty_four_hourly,
-                        psiInfo.items[0].update_timestamp))
+                    PollutionDataMapper.createPMPollutionData(psiInfo))
                 mutableViewState.postValue(PSIViewState.Success)
             }
 

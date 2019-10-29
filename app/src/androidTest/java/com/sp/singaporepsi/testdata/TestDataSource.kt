@@ -5,7 +5,7 @@ import com.sp.singaporepsi.model.APIInfo
 import com.sp.singaporepsi.model.PSIInfo
 
 object SuccessDataSource: PSIDataSource {
-    val successPSITest = PSIInfo(APIInfo("healthy"), listOf(), listOf())
+    val successPSITest = testPSI()
 
     override fun fetchPSIData(callback: PSIDataSource.PSIInfoCallback) {
         callback.onPSIInfoLoaded(successPSITest)

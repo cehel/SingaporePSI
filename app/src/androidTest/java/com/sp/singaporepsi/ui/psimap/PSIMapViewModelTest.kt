@@ -1,21 +1,19 @@
 package com.sp.singaporepsi.ui.psimap
 
-import androidx.lifecycle.Observer
-import org.junit.Rule
-import org.junit.rules.TestRule
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.sp.singaporepsi.model.PSIInfo
-import com.sp.singaporepsi.testdata.DataNotAvailableSource
-import com.sp.singaporepsi.testdata.ErrorDataSource
-import com.sp.singaporepsi.testdata.SuccessDataSource
-import com.sp.singaporepsi.testdata.SuccessDataSource.successPSITest
+import androidx.lifecycle.Observer
+import com.sp.singaporepsi.model.ui.PollutionData
+import com.sp.singaporepsi.testdata.*
 import com.sp.singaporepsi.utils.mock
 import org.junit.Assert
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
+import org.junit.rules.TestRule
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mock
-import org.mockito.Mockito.*
+import org.mockito.Mockito.times
+import org.mockito.Mockito.verify
 
 
 internal class PSIMapViewModelTest {
@@ -26,7 +24,8 @@ internal class PSIMapViewModelTest {
 
     @Mock
     lateinit var observerViewState: Observer<PSIViewState>
-    lateinit var observerPsiInfo: Observer<PSIInfo>
+    lateinit var observerPSIPollution: Observer<PollutionData>
+    lateinit var observerPMPollution: Observer<PollutionData>
 
     @get:Rule
     var rule: TestRule = InstantTaskExecutorRule()
@@ -35,15 +34,16 @@ internal class PSIMapViewModelTest {
     @Before
     fun setUp() {
         this.observerViewState = mock()
-        this.observerPsiInfo = mock()
+        this.observerPSIPollution = mock()
+        this.observerPMPollution = mock()
 
         psiViewModelSuccess.viewState.observeForever(observerViewState)
+        psiViewModelSuccess.pollutionDataPsi24.observeForever(observerPSIPollution)
+        psiViewModelSuccess.pollutionDataPM25.observeForever(observerPMPollution)
+
         psiViewModelNoDataAvailable.viewState.observeForever(observerViewState)
         psiViewModelError.viewState.observeForever(observerViewState)
 
-        psiViewModelSuccess.psiInfo.observeForever(observerPsiInfo)
-        psiViewModelError.psiInfo.observeForever(observerPsiInfo)
-        psiViewModelNoDataAvailable.psiInfo.observeForever(observerPsiInfo)
     }
 
     @Test
@@ -57,13 +57,16 @@ internal class PSIMapViewModelTest {
     }
 
     @Test
-    fun testSuccessfulPSILoadingPSIInfo() {
+    fun testSuccessfulPSILoading() {
         //when
         psiViewModelSuccess.loadPsiData()
 
         //then
-        verify(observerPsiInfo,times(1)).onChanged(any())
-        Assert.assertEquals(successPSITest, psiViewModelSuccess.psiInfo.value)
+        verify(observerPSIPollution,times(1)).onChanged(any())
+        Assert.assertEquals(testPSIPollutionData(), psiViewModelSuccess.pollutionDataPsi24.value)
+
+        verify(observerPMPollution,times(1)).onChanged(any())
+        Assert.assertEquals(testPMPollutionData(), psiViewModelSuccess.pollutionDataPM25.value)
     }
 
     @Test
@@ -72,7 +75,8 @@ internal class PSIMapViewModelTest {
         psiViewModelNoDataAvailable.loadPsiData()
 
         //then
-        verify(observerPsiInfo,times(0)).onChanged(any())
+        verify(observerPSIPollution,times(0)).onChanged(any())
+        verify(observerPMPollution,times(0)).onChanged(any())
     }
 
     @Test
@@ -92,7 +96,8 @@ internal class PSIMapViewModelTest {
         psiViewModelError.loadPsiData()
 
         //then
-        verify(observerPsiInfo,times(0)).onChanged(any())
+        verify(observerPSIPollution,times(0)).onChanged(any())
+        verify(observerPMPollution,times(0)).onChanged(any())
     }
 
     @Test

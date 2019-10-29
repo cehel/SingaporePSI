@@ -42,12 +42,15 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'com.google.android.gms:play-services-maps:16.1.0'
+
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'
     androidTestImplementation "androidx.arch.core:core-testing:2.0.0"
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
     androidTestImplementation 'junit:junit:4.12'
     androidTestImplementation 'org.mockito:mockito-android:3.1.0'
+
     testImplementation("com.squareup.okhttp3:mockwebserver:$okhttp_version")
-    testImplementation "org.junit.jupiter:junit-jupiter-api:5.3.2"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:$junitjupiter_version"
+    testImplementation "org.junit.jupiter:junit-jupiter-params:$junitjupiter_version"
     testImplementation 'org.mockito:mockito-core:2.6.3'
 }
