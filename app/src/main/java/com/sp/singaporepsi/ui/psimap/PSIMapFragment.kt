@@ -17,7 +17,6 @@ import com.sp.singaporepsi.R
 import com.sp.singaporepsi.data.remote.APIServices
 import com.sp.singaporepsi.model.PSIReading
 import com.sp.singaporepsi.model.RegionMetadata
-import com.sp.singaporepsi.model.latLng
 import com.sp.singaporepsi.model.ui.PollutionData
 import kotlinx.android.synthetic.main.fragment_psimap.*
 
@@ -52,7 +51,7 @@ class PSIMapFragment : Fragment(), OnMapReadyCallback {
             viewModel.pollutionDataFor(pollutionType).observe(viewLifecycleOwner, Observer { pollutionData: PollutionData? ->
                 pollutionData?.let {
                     _pollutionData = pollutionData
-                    psiMapTV.text = "Twenty four hourly: ${pollutionData.psiReading}"
+                    //psiMapTV.text = "Twenty four hourly: ${pollutionData.psiReading}"
                     updateMap()
                 }
             })
@@ -80,7 +79,7 @@ class PSIMapFragment : Fragment(), OnMapReadyCallback {
     private fun updateMap(){
         mMap?.let {mMap ->
             _pollutionData?.regionMetadata?.forEach{ regionMeta ->
-                mMap.addMarker(MarkerOptions().position(regionMeta.latLng()).title(getReading(regionMeta.name)))
+                //TODO: mMap.addMarker(MarkerOptions().position(regionMeta.latLng()).title(getReading(regionMeta.name)))
                 if (regionMeta.name == "central") {
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(regionMeta.latLng()))
                 }
@@ -89,16 +88,6 @@ class PSIMapFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
-    private fun getReading(locationName: String): String {
-        return when(locationName) {
-            "north" -> ""+_pollutionData?.psiReading?.north
-            "south" -> ""+_pollutionData?.psiReading?.south
-            "west" -> ""+_pollutionData?.psiReading?.west
-            "east" -> ""+_pollutionData?.psiReading?.east
-            "central" -> ""+_pollutionData?.psiReading?.central
-            else -> ""
-        }
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

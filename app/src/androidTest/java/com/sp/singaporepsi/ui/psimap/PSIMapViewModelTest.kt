@@ -5,9 +5,8 @@ import org.junit.Rule
 import org.junit.rules.TestRule
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.sp.singaporepsi.model.PSIInfo
-import com.sp.singaporepsi.testdata.DataNotAvailableSource
-import com.sp.singaporepsi.testdata.ErrorDataSource
-import com.sp.singaporepsi.testdata.SuccessDataSource
+import com.sp.singaporepsi.model.ui.PollutionData
+import com.sp.singaporepsi.testdata.*
 import com.sp.singaporepsi.testdata.SuccessDataSource.successPSITest
 import com.sp.singaporepsi.utils.mock
 import org.junit.Assert
@@ -27,6 +26,8 @@ internal class PSIMapViewModelTest {
     @Mock
     lateinit var observerViewState: Observer<PSIViewState>
     lateinit var observerPsiInfo: Observer<PSIInfo>
+    lateinit var observerPSIPollution: Observer<PollutionData>
+    lateinit var observerPMPollution: Observer<PollutionData>
 
     @get:Rule
     var rule: TestRule = InstantTaskExecutorRule()
@@ -36,8 +37,13 @@ internal class PSIMapViewModelTest {
     fun setUp() {
         this.observerViewState = mock()
         this.observerPsiInfo = mock()
+        this.observerPSIPollution = mock()
+        this.observerPMPollution = mock()
 
         psiViewModelSuccess.viewState.observeForever(observerViewState)
+        psiViewModelSuccess.pollutionDataPsi24.observeForever(observerPSIPollution)
+        psiViewModelSuccess.pollutionDataPM25.observeForever(observerPMPollution)
+
         psiViewModelNoDataAvailable.viewState.observeForever(observerViewState)
         psiViewModelError.viewState.observeForever(observerViewState)
 
@@ -57,13 +63,19 @@ internal class PSIMapViewModelTest {
     }
 
     @Test
-    fun testSuccessfulPSILoadingPSIInfo() {
+    fun testSuccessfulPSILoading() {
         //when
         psiViewModelSuccess.loadPsiData()
 
         //then
         verify(observerPsiInfo,times(1)).onChanged(any())
         Assert.assertEquals(successPSITest, psiViewModelSuccess.psiInfo.value)
+
+        verify(observerPSIPollution,times(1)).onChanged(any())
+        Assert.assertEquals(testPSIPollutionData(), psiViewModelSuccess.pollutionDataPsi24.value)
+
+        verify(observerPMPollution,times(1)).onChanged(any())
+        Assert.assertEquals(testPMPollutionData(), psiViewModelSuccess.pollutionDataPM25.value)
     }
 
     @Test
