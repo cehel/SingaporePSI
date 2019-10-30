@@ -40,7 +40,6 @@ class PSIMapFragment : Fragment(), OnMapReadyCallback {
     private var mMap: GoogleMap? = null
     private var mapFragment: SupportMapFragment? = null
     private var _pollutionData: PollutionData? = null
-    private var _pollutionType: PollutionType? = null
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
