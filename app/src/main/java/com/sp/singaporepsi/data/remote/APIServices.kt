@@ -12,4 +12,6 @@ object APIServices {
         .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
         .create() }
 
+    val psiDataSourceRemote by lazy { PSIDataSourceRemote(psiAPI) }
+
 }

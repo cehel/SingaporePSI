@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">SingaporePSI</string>
+    <string name="app_name">Air Quality</string>
+
+    <string name="tab_title_24hpsi">24h PSI</string>
+    <string name="tab_title_24h25PM">24h 2.5PM</string>
+    <string name="google_maps_key">AIzaSyCXTqBTsH4EY2KRRd42N2em9tmOE3pli_0</string>
+
+    <string name="no_data_available">There is a problem with your internet connection.</string>
 </resources>
