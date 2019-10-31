@@ -18,3 +18,9 @@ Currently the app only loads the data from the API and does not cache or store i
 -expresso
 -JUnit5
 -Google Maps
+
+##Future work
+- Add caching or save the data locally using Room
+- Introduce dependency injection framework
+- Test UI displayed on the map
+- There is no SplashScreen image

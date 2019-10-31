@@ -5,8 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
 import androidx.test.rule.ActivityTestRule
@@ -72,10 +71,23 @@ internal class PSITabBarFragmentTest {
     @Test
     fun whenViewStateIsError() {
         //Given
-        mutabbleViewStateLiveData.postValue(PSIViewState.Error("There was an error"))
+        val errorMessage = "There was an error"
+        mutabbleViewStateLiveData.postValue(PSIViewState.Error(errorMessage))
 
         //then
         onView(allOf(withId(R.id.errorView))).check(matches(isDisplayed()))
+        onView(allOf(withId(R.id.errorView))).check(matches(withText(errorMessage)))
         onView(withId(R.id.loadingView)).check(matches(not(isDisplayed())))
+    }
+
+    @Test
+    fun whenViewStateIsSuccess() {
+        //Given
+        mutabbleViewStateLiveData.postValue(PSIViewState.Success)
+
+        //then
+        onView(allOf(withId(R.id.tabLayout))).check(matches(isDisplayed()))
+        onView(withId(R.id.loadingView)).check(matches(not(isDisplayed())))
+        onView(withId(R.id.errorView)).check(matches(not(isDisplayed())))
     }
 }

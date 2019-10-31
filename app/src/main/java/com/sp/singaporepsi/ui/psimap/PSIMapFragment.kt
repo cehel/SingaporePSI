@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -40,15 +41,18 @@ class PSIMapFragment : Fragment(), OnMapReadyCallback {
 
     enum class PollutionType{PSI_24H,PM25_24H}
 
+    var psiMapViewModelFactory: ViewModelProvider.Factory = PSIMapViewModelFactory(AirQualityAppServices.psiDataSourceRemote)
+
     private lateinit var viewModel: PSIMapViewModel
     private var mMap: GoogleMap? = null
     private var mapFragment: SupportMapFragment? = null
     private var _pollutionData: PollutionData? = null
 
 
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val fragment = inflater.inflate(R.layout.fragment_psimap, container, false)
-        viewModel = ViewModelProviders.of(activity!!,PSIMapViewModelFactory(AirQualityAppServices.psiDataSourceRemote)).get(PSIMapViewModel::class.java)
+        viewModel = ViewModelProviders.of(activity!!, psiMapViewModelFactory).get(PSIMapViewModel::class.java)
         val pollutionType = arguments?.getString(PollutionTypeKey)
         pollutionType?.let{
             viewModel.pollutionDataFor(pollutionType).observe(viewLifecycleOwner, Observer { pollutionData: PollutionData? ->
@@ -71,6 +75,7 @@ class PSIMapFragment : Fragment(), OnMapReadyCallback {
     private fun updateUIWith(pollutionData: PollutionData) {
         _pollutionData = pollutionData
         airQualityGrade.text = pollutionData.pollutionLevel.title.toUpperCase()
+        healthAdvisoryGrade.text = mapPollutionLevelHealthAdvisory(pollutionData.pollutionLevel)
         activity?.let {
             val healthAdvColor = pollutionLevelToColor(pollutionData.pollutionLevel, it)
             airQualityGrade.setTextColor(healthAdvColor)
@@ -101,13 +106,25 @@ class PSIMapFragment : Fragment(), OnMapReadyCallback {
 
     }
 
+    //this should be moved to Strings for translation issues
+    fun mapPollutionLevelHealthAdvisory(pollutionLevel: PollutionLevel): String {
+        val stringID = when (pollutionLevel){
+            PMLevel.NORMAL, PSILevel.GOOD -> R.string.health_advisory_normal
+            PMLevel.ELEVATED, PSILevel.MODERATE -> R.string.health_advisory_less
+            PMLevel.HIGH, PSILevel.UNHEALTHY, PSILevel.VERYUNHEALTHY -> R.string.health_advisory_minimize
+            PMLevel.VERY_HIGH, PSILevel.HAZARDOUS -> R.string.health_advisory_avoid
+            else -> throw NoSuchFieldException("There is no PollutionValue mapping for $pollutionLevel")
+        }
+        return resources.getString(stringID)
+    }
+
     private fun updateMap(){
         mMap?.let {mMap ->
             _pollutionData?.regionMetadata?.forEach{ regionMeta ->
                 val pollutionValue = _pollutionData?.pollutionValues?.get(regionMeta.name)
                 activity?.let { context ->
                     val markerIcon = getMarkerIcon(
-                        root = context.findViewById(R.id.contentFrame) as ViewGroup,
+                        root = context.findViewById(R.id.mapContainer) as ViewGroup,
                         title = regionMeta.name,
                         value = ""+pollutionValue?.value,
                         color = pollutionLevelToColor(pollutionValue?.pollutionLevel, context))

@@ -8,8 +8,7 @@ data class PollutionData (
     val regionMetadata: List<RegionMetadata>,
     val pollutionValues: Map<String, PollutionValue>,
     val updateTime: Date,
-    val pollutionLevel: PollutionLevel,
-    val healthAdvisory: String? = null
+    val pollutionLevel: PollutionLevel
 )
 
 interface PollutionLevel{
