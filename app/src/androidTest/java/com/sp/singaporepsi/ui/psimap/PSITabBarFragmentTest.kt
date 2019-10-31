@@ -1,31 +1,30 @@
 package com.sp.singaporepsi.ui.psimap
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.constraintlayout.solver.widgets.ConstraintWidget.VISIBLE
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers
-import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
 import androidx.test.rule.ActivityTestRule
-import com.nhaarman.mockitokotlin2.whenever
-import com.sp.singaporepsi.MainActivity
 import com.sp.singaporepsi.R
+import com.sp.singaporepsi.SingleFragmentActivity
 import com.sp.singaporepsi.testdata.ViewModelUtil
-import com.sp.singaporepsi.utils.mock
+import io.mockk.every
+import io.mockk.mockk
 import org.hamcrest.CoreMatchers.allOf
-import org.junit.Test
-
+import org.hamcrest.CoreMatchers.not
 import org.junit.Before
 import org.junit.Rule
+import org.junit.Test
 import org.junit.rules.TestRule
 import org.junit.runner.RunWith
-import org.mockito.Mock
 import org.mockito.junit.MockitoJUnit
 import org.mockito.junit.MockitoRule
+
 
 @MediumTest
 @RunWith(AndroidJUnit4::class)
@@ -33,7 +32,7 @@ internal class PSITabBarFragmentTest {
 
     @Rule
     @JvmField
-    val activityRule = ActivityTestRule(MainActivity::class.java)
+    val activityRule = ActivityTestRule(SingleFragmentActivity::class.java)
 
     @get:Rule
     var rule: TestRule = InstantTaskExecutorRule()
@@ -47,16 +46,17 @@ internal class PSITabBarFragmentTest {
     private val mutabbleViewStateLiveData = MutableLiveData<PSIViewState>()
     private val viewStatLiveData: LiveData<PSIViewState> = mutabbleViewStateLiveData
 
-    @Mock
     private lateinit var viewModel: PSIMapViewModel
 
     @Before
     fun setUp() {
-        viewModel = mock()
+        viewModel = mockk(relaxed = true)
 
-        whenever(viewModel.viewState).thenReturn(viewStatLiveData)
+        every { viewModel.viewState} returns viewStatLiveData
 
         tabBarFragment.psiMapViewModelFactory = ViewModelUtil.createFor(viewModel)
+
+        activityRule.activity.setFragment(tabBarFragment)
     }
 
     @Test
@@ -64,17 +64,18 @@ internal class PSITabBarFragmentTest {
         //Given
         mutabbleViewStateLiveData.postValue(PSIViewState.Loading)
 
-        //When
-        val beginTransaction = activityRule.activity.supportFragmentManager.beginTransaction()
-        beginTransaction.apply {
-            add(R.id.contentFrame, tabBarFragment)
-                .commit()
-        }
+        //then
+        onView(allOf(withId(R.id.loadingView))).check(matches(isDisplayed()))
+        onView(withId(R.id.errorView)).check(matches(not(isDisplayed())))
+    }
+
+    @Test
+    fun whenViewStateIsError() {
+        //Given
+        mutabbleViewStateLiveData.postValue(PSIViewState.Error("There was an error"))
 
         //then
-        onView(withId(R.id.toplayout)).check(matches(isDisplayed()))
-        //onView(withId(R.id.errorView)).check(matches(not(isDisplayed())))
-
-
+        onView(allOf(withId(R.id.errorView))).check(matches(isDisplayed()))
+        onView(withId(R.id.loadingView)).check(matches(not(isDisplayed())))
     }
 }

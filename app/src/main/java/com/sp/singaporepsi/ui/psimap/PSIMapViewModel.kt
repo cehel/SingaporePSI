@@ -8,7 +8,7 @@ import com.sp.singaporepsi.model.PSIInfo
 import com.sp.singaporepsi.model.mapper.PollutionDataMapper
 import com.sp.singaporepsi.model.ui.PollutionData
 
-open class PSIMapViewModel(val psiDataSource: PSIDataSource) : ViewModel() {
+class PSIMapViewModel(val psiDataSource: PSIDataSource) : ViewModel() {
 
     private val mutablePollutionDataPsi = MutableLiveData<PollutionData>()
     val pollutionDataPsi24: LiveData<PollutionData> = mutablePollutionDataPsi
@@ -17,7 +17,7 @@ open class PSIMapViewModel(val psiDataSource: PSIDataSource) : ViewModel() {
     val pollutionDataPM25: LiveData<PollutionData> = mutablePollutionDataPM25
 
     private val mutableViewState: MutableLiveData<PSIViewState> = MutableLiveData<PSIViewState>()
-    open val viewState : LiveData<PSIViewState> = mutableViewState
+    val viewState : LiveData<PSIViewState> = mutableViewState
 
 
     fun pollutionDataFor(pollutionType: String): LiveData<PollutionData> {

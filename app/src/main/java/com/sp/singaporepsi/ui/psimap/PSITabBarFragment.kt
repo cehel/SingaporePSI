@@ -26,7 +26,7 @@ class PSITabBarFragment : Fragment() {
     private lateinit var viewModel: PSIMapViewModel
 
     override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        return inflater.inflate(com.sp.singaporepsi.R.layout.psitabbar_fragment, container, false)
+        return inflater.inflate(R.layout.psitabbar_fragment, container, false)
     }
 
 
@@ -42,21 +42,21 @@ class PSITabBarFragment : Fragment() {
     private fun handleViewState(viewState: PSIViewState?) {
         when (viewState) {
             PSIViewState.NoDataAvailable -> {
-                airQualityLoadingView.visibility = View.GONE
+                loadingView.visibility = View.GONE
                 errorView.visibility = View.VISIBLE
                 errorView.setText(resources.getString(R.string.no_data_available))
             }
             is PSIViewState.Error -> {
-                airQualityLoadingView.visibility = View.GONE
+                loadingView.visibility = View.GONE
                 errorView.visibility = View.VISIBLE
                 errorView.setText(viewState.errorMessage)
             }
             PSIViewState.Success -> {
-                airQualityLoadingView.visibility = View.GONE
+                loadingView.visibility = View.GONE
                 errorView.visibility = View.GONE
             }
             PSIViewState.Loading -> {
-                airQualityLoadingView.visibility = View.VISIBLE
+                loadingView.visibility = View.VISIBLE
                 errorView.visibility = View.GONE
             }
         }

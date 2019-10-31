@@ -8,6 +8,7 @@ import java.lang.reflect.Modifier
 /**
  * This object is used in this small application to manage and instantiate dependencies.
  * In a larger project, I would recommend to use a dependency injection framework like Dagger2.
+ * It is also easier to test applications when using Dagger2
  *
  */
 object AirQualityAppServices {
