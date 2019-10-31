@@ -1,5 +1,6 @@
 package com.sp.singaporepsi.data.remote
 
+import com.sp.singaporepsi.AirQualityAppServices
 import com.sp.singaporepsi.model.PSIInfo
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Disabled
@@ -9,7 +10,7 @@ import retrofit2.Response
 
 internal class PSIServivceTest {
 
-    val testSubject = APIServices.psiAPI
+    val testSubject = AirQualityAppServices.psiAPI
 
     @Test
     @Disabled //This test is just helpful for implementation, a test should not call a remote API

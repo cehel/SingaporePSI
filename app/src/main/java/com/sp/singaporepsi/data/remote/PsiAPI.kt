@@ -1,5 +1,6 @@
 package com.sp.singaporepsi.data.remote
 
+import com.sp.singaporepsi.AirQualityAppServices
 import com.sp.singaporepsi.model.PSIInfo
 import retrofit2.Call
 import retrofit2.Retrofit
@@ -18,7 +19,7 @@ interface PsiAPI {
 
             val retrofit = Retrofit.Builder()
                 .baseUrl("https://api.data.gov.sg/v1/")
-                .addConverterFactory(GsonConverterFactory.create(APIServices.psiGson))
+                .addConverterFactory(GsonConverterFactory.create(AirQualityAppServices.psiGson))
                 .build()
 
             return retrofit.create(PsiAPI::class.java)

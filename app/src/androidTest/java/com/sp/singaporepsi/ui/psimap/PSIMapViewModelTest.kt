@@ -4,16 +4,13 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.sp.singaporepsi.model.ui.PollutionData
 import com.sp.singaporepsi.testdata.*
-import com.sp.singaporepsi.utils.mock
+import io.mockk.mockk
+import io.mockk.verify
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule
-import org.mockito.ArgumentMatchers.any
-import org.mockito.Mock
-import org.mockito.Mockito.times
-import org.mockito.Mockito.verify
 
 
 internal class PSIMapViewModelTest {
@@ -22,7 +19,6 @@ internal class PSIMapViewModelTest {
     val psiViewModelNoDataAvailable = PSIMapViewModel(DataNotAvailableSource)
     val psiViewModelError = PSIMapViewModel(ErrorDataSource)
 
-    @Mock
     lateinit var observerViewState: Observer<PSIViewState>
     lateinit var observerPSIPollution: Observer<PollutionData>
     lateinit var observerPMPollution: Observer<PollutionData>
@@ -33,9 +29,9 @@ internal class PSIMapViewModelTest {
 
     @Before
     fun setUp() {
-        this.observerViewState = mock()
-        this.observerPSIPollution = mock()
-        this.observerPMPollution = mock()
+        this.observerViewState = mockk(relaxed = true)
+        this.observerPSIPollution = mockk(relaxed = true)
+        this.observerPMPollution = mockk(relaxed = true)
 
         psiViewModelSuccess.viewState.observeForever(observerViewState)
         psiViewModelSuccess.pollutionDataPsi24.observeForever(observerPSIPollution)
@@ -52,7 +48,8 @@ internal class PSIMapViewModelTest {
         psiViewModelSuccess.loadPsiData()
 
         //then
-        verify(observerViewState,times(2)).onChanged(any())
+        verify(exactly = 1){observerViewState.onChanged(PSIViewState.Loading)}
+        verify(exactly = 1){observerViewState.onChanged(PSIViewState.Success)}
         Assert.assertEquals(PSIViewState.Success, psiViewModelSuccess.viewState.value)
     }
 
@@ -62,10 +59,10 @@ internal class PSIMapViewModelTest {
         psiViewModelSuccess.loadPsiData()
 
         //then
-        verify(observerPSIPollution,times(1)).onChanged(any())
+        verify(exactly = 1){observerPSIPollution.onChanged(any())}
         Assert.assertEquals(testPSIPollutionData(), psiViewModelSuccess.pollutionDataPsi24.value)
 
-        verify(observerPMPollution,times(1)).onChanged(any())
+        verify(exactly = 1){observerPMPollution.onChanged(any())}
         Assert.assertEquals(testPMPollutionData(), psiViewModelSuccess.pollutionDataPM25.value)
     }
 
@@ -75,8 +72,8 @@ internal class PSIMapViewModelTest {
         psiViewModelNoDataAvailable.loadPsiData()
 
         //then
-        verify(observerPSIPollution,times(0)).onChanged(any())
-        verify(observerPMPollution,times(0)).onChanged(any())
+        verify(exactly = 0){observerPSIPollution.onChanged(any())}
+        verify(exactly = 0){observerPMPollution.onChanged(any())}
     }
 
     @Test
@@ -85,7 +82,7 @@ internal class PSIMapViewModelTest {
         psiViewModelNoDataAvailable.loadPsiData()
 
         //then
-        verify(observerViewState,times(2)).onChanged(any())
+        verify(exactly = 2){observerViewState.onChanged(any())}
         Assert.assertEquals(PSIViewState.NoDataAvailable, psiViewModelNoDataAvailable.viewState.value)
     }
 
@@ -96,8 +93,8 @@ internal class PSIMapViewModelTest {
         psiViewModelError.loadPsiData()
 
         //then
-        verify(observerPSIPollution,times(0)).onChanged(any())
-        verify(observerPMPollution,times(0)).onChanged(any())
+        verify(exactly = 0){observerPSIPollution.onChanged(any())}
+        verify(exactly = 0){observerPMPollution.onChanged(any())}
     }
 
     @Test
@@ -106,7 +103,7 @@ internal class PSIMapViewModelTest {
         psiViewModelError.loadPsiData()
 
         //then
-        verify(observerViewState,times(2)).onChanged(any())
+        verify(exactly = 2){observerViewState.onChanged(any())}
         Assert.assertEquals(PSIViewState.Error(ErrorDataSource.errorMessage), psiViewModelError.viewState.value)
     }
 }

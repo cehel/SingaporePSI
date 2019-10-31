@@ -1,5 +1,6 @@
 package com.sp.singaporepsi.data.remote
 
+import com.sp.singaporepsi.AirQualityAppServices
 import com.sp.singaporepsi.model.PSIInfo
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -7,7 +8,7 @@ import org.junit.jupiter.api.Test
 
 internal class PSIGsonTest {
 
-    val testSubject = APIServices.psiGson
+    val testSubject = AirQualityAppServices.psiGson
 
 
     @Test

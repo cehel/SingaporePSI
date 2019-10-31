@@ -1,15 +1,14 @@
 package com.sp.singaporepsi.model.mapper
 
 import com.sp.singaporepsi.common.testPSI
-import com.sp.singaporepsi.model.ui.*
+import com.sp.singaporepsi.model.ui.PMLevel
+import com.sp.singaporepsi.model.ui.PSILevel
+import com.sp.singaporepsi.model.ui.PollutionData
+import com.sp.singaporepsi.model.ui.PollutionValue
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.CsvSource
-import org.junit.jupiter.params.provider.ValueSource
-import java.util.stream.Stream
 
 internal class PollutionDataMapperTest {
     val testSubject = PollutionDataMapper
@@ -31,7 +30,6 @@ internal class PollutionDataMapperTest {
             )
         val expected = PollutionData(psiInfo.region_metadata, expectedMap, psiInfo.items[0].update_timestamp,PSILevel.GOOD)
 
-        assertEquals(expected.healthAdvisory, pmPollutionData.healthAdvisory)
         assertEquals(expected.pollutionLevel, pmPollutionData.pollutionLevel)
         assertEquals(expected.pollutionValues, pmPollutionData.pollutionValues)
     }
@@ -52,7 +50,6 @@ internal class PollutionDataMapperTest {
         )
         val expected = PollutionData(psiInfo.region_metadata, expectedMap, psiInfo.items[0].update_timestamp,PMLevel.NORMAL)
 
-        assertEquals(expected.healthAdvisory, pmPollutionData.healthAdvisory)
         assertEquals(expected.pollutionLevel, pmPollutionData.pollutionLevel)
         assertEquals(expected.pollutionValues, pmPollutionData.pollutionValues)
     }

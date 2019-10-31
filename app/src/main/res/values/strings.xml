@@ -6,4 +6,12 @@
     <string name="google_maps_key">AIzaSyCXTqBTsH4EY2KRRd42N2em9tmOE3pli_0</string>
 
     <string name="no_data_available">There is a problem with your internet connection.</string>
+    <string name="health_advisory">Health Advisory</string>
+    <string name="general_public">General Public</string>
+    <string name="air_quality_forecast">Air Quality Forecast</string>
+
+    <string name="health_advisory_normal">Normal Activity</string>
+    <string name="health_advisory_less">Less Outdoor Activity</string>
+    <string name="health_advisory_minimize">Minimize Outdoor</string>
+    <string name="health_advisory_avoid">Avoid Outdoor</string>
 </resources>

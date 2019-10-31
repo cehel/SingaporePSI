@@ -12,7 +12,7 @@ object PollutionDataMapper {
 
         val nationalIndex = reading.national.toInt()
 
-        val healthAdvisory: PollutionLevel = mapPSIToPollutionLevel(nationalIndex)
+        val pollutionLevel: PollutionLevel = mapPSIToPollutionLevel(nationalIndex)
 
         val pollutionValueMap = psiInfo.region_metadata.map { it.name to findPollutionValue(it.name, reading, ::mapPSIToPollutionLevel) }.toMap()
 
@@ -20,14 +20,14 @@ object PollutionDataMapper {
             psiInfo.region_metadata,
             pollutionValueMap,
             psiInfo.items[0].update_timestamp,
-            healthAdvisory)
+            pollutionLevel)
     }
 
     fun createPMPollutionData(psiInfo: PSIInfo): PollutionData {
 
         val reading = psiInfo.items[0].readings.pm25_twenty_four_hourly
 
-        val healthAdvisory: PollutionLevel = mapPM25ToPollutionLevel(reading.national.toInt())
+        val pollutionLevel: PollutionLevel = mapPM25ToPollutionLevel(reading.national.toInt())
 
         val pollutionValueMap = psiInfo.region_metadata.map { it.name to findPollutionValue(it.name, reading, ::mapPM25ToPollutionLevel) }.toMap()
 
@@ -35,7 +35,7 @@ object PollutionDataMapper {
             psiInfo.region_metadata,
             pollutionValueMap,
             psiInfo.items[0].update_timestamp,
-            healthAdvisory)
+            pollutionLevel)
     }
 
     private fun findPollutionValue(

@@ -6,15 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager.widget.ViewPager
 import com.sp.singaporepsi.R
-import com.sp.singaporepsi.data.remote.APIServices
+import com.sp.singaporepsi.AirQualityAppServices
 import com.sp.singaporepsi.ui.adapter.PSIMapPageAdapter
 import kotlinx.android.synthetic.main.psitabbar_fragment.*
 
 
 class PSITabBarFragment : Fragment() {
+
+    var psiMapViewModelFactory: ViewModelProvider.Factory = PSIMapViewModelFactory(AirQualityAppServices.psiDataSourceRemote)
 
     companion object {
         fun newInstance() = PSITabBarFragment()
@@ -23,12 +26,13 @@ class PSITabBarFragment : Fragment() {
     private lateinit var viewModel: PSIMapViewModel
 
     override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        return inflater.inflate(com.sp.singaporepsi.R.layout.psitabbar_fragment, container, false)
+        return inflater.inflate(R.layout.psitabbar_fragment, container, false)
     }
+
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(activity!!,PSIMapViewModelFactory(APIServices.psiDataSourceRemote)).get(PSIMapViewModel::class.java)
+        viewModel = ViewModelProviders.of(activity!!, psiMapViewModelFactory).get(PSIMapViewModel::class.java)
         viewModel.loadPsiData()
         viewModel.viewState.observe(viewLifecycleOwner, Observer {viewState -> handleViewState(viewState) })
         setupViewPager(viewpager)
