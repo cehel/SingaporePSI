@@ -65,6 +65,7 @@ class PSIMapFragmentTest {
         //then
         onView(withId(R.id.airQualityGrade)).check(matches(withText("NORMAL")))
         onView(withId(R.id.airQualityGrade)).check(matches(hasTextColor(R.color.grade_good)))
+        onView(withId(R.id.healthAdvisoryGrade)).check(matches(withText("Normal Activity")))
     }
 
     @Test
@@ -75,6 +76,7 @@ class PSIMapFragmentTest {
         //then
         onView(withId(R.id.airQualityGrade)).check(matches(withText("ELEVATED")))
         onView(withId(R.id.airQualityGrade)).check(matches(hasTextColor(R.color.grade_moderate)))
+        onView(withId(R.id.healthAdvisoryGrade)).check(matches(withText("Less Outdoor Activity")))
     }
 
     @Test
@@ -85,6 +87,7 @@ class PSIMapFragmentTest {
         //then
         onView(withId(R.id.airQualityGrade)).check(matches(withText("HIGH")))
         onView(withId(R.id.airQualityGrade)).check(matches(hasTextColor(R.color.grade_unhealthy)))
+        onView(withId(R.id.healthAdvisoryGrade)).check(matches(withText("Minimize Outdoor")))
     }
 
     @Test
@@ -95,6 +98,7 @@ class PSIMapFragmentTest {
         //then
         onView(withId(R.id.airQualityGrade)).check(matches(withText("VERY HIGH")))
         onView(withId(R.id.airQualityGrade)).check(matches(hasTextColor(R.color.hazardous)))
+        onView(withId(R.id.healthAdvisoryGrade)).check(matches(withText("Avoid Outdoor")))
     }
 
 
