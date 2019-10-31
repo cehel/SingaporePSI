@@ -11,13 +11,13 @@ Currently the app only loads the data from the API and does not cache or store i
 
 ## Libraries used
 
--Android Architecture Components
--Retrofit
--Mockito
--mockk
--expresso
--JUnit5
--Google Maps
+- Android Architecture Components
+- Retrofit
+- Mockito
+- mockk
+- expresso
+- JUnit5
+- Google Maps
 
 ## Future work
 - Add caching or save the data locally using Room
