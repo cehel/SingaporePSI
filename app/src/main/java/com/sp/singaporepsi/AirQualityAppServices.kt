@@ -1,9 +1,16 @@
-package com.sp.singaporepsi.data.remote
+package com.sp.singaporepsi
 
 import com.google.gson.GsonBuilder
+import com.sp.singaporepsi.data.remote.PSIDataSourceRemote
+import com.sp.singaporepsi.data.remote.PsiAPI
 import java.lang.reflect.Modifier
 
-object APIServices {
+/**
+ * This object is used in this small application to manage and instantiate dependencies.
+ * In a larger project, I would recommend to use a dependency injection framework like Dagger2.
+ *
+ */
+object AirQualityAppServices {
 
     val psiAPI by lazy { PsiAPI.create() }
 

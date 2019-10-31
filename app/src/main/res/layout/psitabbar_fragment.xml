@@ -38,7 +38,7 @@
         android:text="@string/app_name"/>
 
     <FrameLayout
-        android:id="@+id/loadingView"
+        android:id="@+id/airQualityLoadingView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorPrimaryDark"

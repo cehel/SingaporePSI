@@ -4,4 +4,9 @@
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#FFFF43</color>
     <color name="colorText">#FFFFFF</color>
+    <color name="grade_good">#59DE16</color>
+    <color name="grade_moderate">#0065FF</color>
+    <color name="grade_unhealthy">#fffe03</color>
+    <color name="grade_very_unhealthy">#ffa800</color>
+    <color name="hazardous">#d60000</color>
 </resources>
